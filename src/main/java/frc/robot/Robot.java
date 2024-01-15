@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PS4Controller;
+import com.revrobotics.CANSparkMax;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
