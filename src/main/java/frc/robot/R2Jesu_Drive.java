@@ -7,8 +7,11 @@ package frc.robot;
   import com.revrobotics.CANSparkLowLevel.MotorType;
   import com.ctre.phoenix.*;
   import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+  import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
   import edu.wpi.first.wpilibj.*;
   import edu.wpi.first.math.controller.*;
+  import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+  import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class R2Jesu_Drive {
 
@@ -27,13 +30,13 @@ public class R2Jesu_Drive {
   // swerve 3
   private CANSparkMax m_SwerveDrive3 = new CANSparkMax(7, MotorType.kBrushless);
   private RelativeEncoder m_DriveEncoder3 = m_SwerveDrive3.getEncoder();
-  private WPI_VictorSPX m_SwerveTurn3 = new WPI_VictorSPX(3);
+  private WPI_TalonSRX m_SwerveTurn3 = new WPI_TalonSRX(3);
   private AnalogInput m_SwerveAnalog3 = new AnalogInput(2);
 
   // swerve 4
   private CANSparkMax m_SwerveDrive4 = new CANSparkMax(8, MotorType.kBrushless);
   private RelativeEncoder m_DriveEncoder4 = m_SwerveDrive4.getEncoder();
-  private WPI_VictorSPX m_SwerveTurn4 = new WPI_VictorSPX(4);
+  private WPI_TalonSRX m_SwerveTurn4 = new WPI_TalonSRX(4);
   private AnalogInput m_SwerveAnalog4 = new AnalogInput(3);
 
   private double inputAngle = 0.0;
@@ -106,8 +109,16 @@ public class R2Jesu_Drive {
     newY = r * (Math.sin(fieldOrientedAngle * Math.PI/180.0));
     A = newY - z*(LENGTH/R);
     B = newY + z*(LENGTH/R);
-    C = newY - z*(WIDTH/R);
-    D = newY + z*(WIDTH/R);
+    C = newX - z*(WIDTH/R);
+    D = newX + z*(WIDTH/R);
+
+    if (z != 0.0)
+    {
+        speedChoice = turnSpeed;
+    } else
+    {
+        speedChoice = fullSpeed;
+    }
 
     wSpeed1 = speedChoice *  (Math.sqrt(B*B + C*C));
 	wAngle1 = Math.atan2(B,C) * 180.0/Math.PI; 
@@ -193,6 +204,23 @@ else
     m_SwerveDrive4.set(0.0);
     m_SwerveTurn4.set(0.0);
 }
+SmartDashboard.putNumber("NavX", ahrs.getYaw());
+SmartDashboard.putNumber("Pitch", ahrs.getPitch());
+SmartDashboard.putNumber("Wheel 1 Voltage", m_SwerveAnalog1.getVoltage());
+SmartDashboard.putNumber("Wheel 1 Angle", (m_SwerveAnalog1.getVoltage()*conversion1));
+SmartDashboard.putNumber("Wheel 2 Voltage", m_SwerveAnalog2.getVoltage());
+SmartDashboard.putNumber("Wheel 2 Angle", (m_SwerveAnalog2.getVoltage()*conversion2));
+SmartDashboard.putNumber("Wheel 3 Voltage", m_SwerveAnalog3.getVoltage());
+SmartDashboard.putNumber("Wheel 3 Angle", (m_SwerveAnalog3.getVoltage()*conversion3));
+SmartDashboard.putNumber("Wheel 4 Voltage", m_SwerveAnalog4.getVoltage());
+SmartDashboard.putNumber("Wheel 4 Angle", (m_SwerveAnalog4.getVoltage()*conversion4));
+SmartDashboard.putNumber("X", x);
+SmartDashboard.putNumber("Y", y);
+SmartDashboard.putNumber("Z", z);
+SmartDashboard.putNumber("Wheel 1 Speed", wSpeed1);
+SmartDashboard.putNumber("Wheel 2 Speed", wSpeed2);
+SmartDashboard.putNumber("Wheel 3 Speed", wSpeed3);
+SmartDashboard.putNumber("Wheel 4 Speed", wSpeed4);
 
   }
 

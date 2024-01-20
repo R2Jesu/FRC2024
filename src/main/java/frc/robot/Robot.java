@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 
 
 /**
@@ -19,14 +19,14 @@ import edu.wpi.first.wpilibj.PS4Controller;
  * project.
  */
 public class Robot extends TimedRobot {
-  R2Jesu_Drive robotDrive;
+  R2Jesu_Drive robotDrive = new R2Jesu_Drive();
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   // defining drive here
-  private final PS4Controller m_Drivestick = new PS4Controller(0);
-  private final PS4Controller m_Operatorstick = new PS4Controller(1);
+  private final XboxController m_Drivestick = new XboxController(0);
+  private final XboxController m_Operatorstick = new XboxController(1);
   
 
   /**
@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    robotDrive.drive(m_Drivestick.getR2Axis(), m_Drivestick.getRightY(), m_Drivestick.getLeftX());
+    robotDrive.drive(m_Drivestick.getRightX(), m_Drivestick.getRightY(), m_Drivestick.getLeftX());
   }
 
   /** This function is called once when the robot is disabled. */
