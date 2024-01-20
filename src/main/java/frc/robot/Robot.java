@@ -9,12 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.PS4Controller;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.ctre.phoenix.*;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import edu.wpi.first.wpilibj.XboxController;
 
 
 /**
@@ -24,37 +19,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
  * project.
  */
 public class Robot extends TimedRobot {
+  R2Jesu_Drive robotDrive = new R2Jesu_Drive();
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   // defining drive here
-  private final PS4Controller m_Drivestick = new PS4Controller(0);
-  private final PS4Controller m_Operatorstick = new PS4Controller(1);
+  private final XboxController m_Drivestick = new XboxController(0);
+  private final XboxController m_Operatorstick = new XboxController(1);
   
-  // swerve 1
-  private CANSparkMax m_SwerveDrive1 = new CANSparkMax(5, MotorType.kBrushless);
-  private RelativeEncoder m_DriveEncoder1 = m_SwerveDrive1.getEncoder();
-  private WPI_VictorSPX m_SwerveTurn1 = new WPI_VictorSPX(1);
-  private AnalogInput m_SwerveAnalog1 = new AnalogInput(0);
-
-  // swerve 2
-  private CANSparkMax m_SwerveDrive2 = new CANSparkMax(6, MotorType.kBrushless);
-  private RelativeEncoder m_DriveEncoder2 = m_SwerveDrive2.getEncoder();
-  private WPI_VictorSPX m_SwerveTurn2 = new WPI_VictorSPX(2);
-  private AnalogInput m_SwerveAnalog2 = new AnalogInput(1);
-
-  // swerve 3
-  private CANSparkMax m_SwerveDrive3 = new CANSparkMax(7, MotorType.kBrushless);
-  private RelativeEncoder m_DriveEncoder3 = m_SwerveDrive3.getEncoder();
-  private WPI_VictorSPX m_SwerveTurn3 = new WPI_VictorSPX(3);
-  private AnalogInput m_SwerveAnalog3 = new AnalogInput(2);
-
-  // swerve 4
-  private CANSparkMax m_SwerveDrive4 = new CANSparkMax(8, MotorType.kBrushless);
-  private RelativeEncoder m_DriveEncoder4 = m_SwerveDrive4.getEncoder();
-  private WPI_VictorSPX m_SwerveTurn4 = new WPI_VictorSPX(4);
-  private AnalogInput m_SwerveAnalog4 = new AnalogInput(3);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -115,7 +88,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    robotDrive.drive(m_Drivestick.getRightX(), m_Drivestick.getRightY(), m_Drivestick.getLeftX());
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
